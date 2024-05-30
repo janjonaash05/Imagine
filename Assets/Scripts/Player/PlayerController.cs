@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
 using UnityEngine.UIElements;
+using System;
 
 
 public class PlayerController : MonoBehaviour
@@ -80,17 +81,22 @@ public class PlayerController : MonoBehaviour
         grounded = true;
         jump.performed += Jump;
 
-
+        shoot.performed += (_) => OnPlayerAttemptShot?.Invoke();
 
 
 
     }
 
+
+
+    public event Action OnPlayerAttemptShot;
+
+
     private Vector2 moveDir;
     private Vector2 camTurn;
-    [SerializeField] LayerMask mask;
-    [SerializeField] float moveSpeed;
-    [SerializeField] float jumpSpeed;
+    [SerializeField] private LayerMask mask;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float jumpSpeed;
 
 
     void Update()
@@ -111,7 +117,7 @@ public class PlayerController : MonoBehaviour
             grounded = true;
         }
 
-        Debug.Log(grounded);
+      
 
         rb.velocity = moveSpeed * Time.fixedDeltaTime * ((transform.forward * moveDir.y) + (transform.right * moveDir.x));
 
@@ -123,7 +129,7 @@ public class PlayerController : MonoBehaviour
 
 
 
-        Debug.Log(moveDir);
+       
     }
 
 
@@ -132,7 +138,7 @@ public class PlayerController : MonoBehaviour
     {
         if (grounded)
         {
-            Debug.LogError("JUMP");
+           
             grounded = false;
 
             rb.AddForce(jumpSpeed * Vector3.up, ForceMode.Impulse);

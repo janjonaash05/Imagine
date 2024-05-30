@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class RadiusDetection : MonoBehaviour
 {
-    // Start is called before the first frame update
     public event Action<GameObject> OnObjectCaught;
+    public event Action OnObjectLost;
 
+    [SerializeField] LayerMask includeMask; 
 
     private SphereCollider coll;
 
@@ -24,6 +25,19 @@ public class RadiusDetection : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (((1 << other.gameObject.layer) & includeMask) == 0) return;
+
+            Debug.Log("CAUGHT");
         OnObjectCaught?.Invoke(other.gameObject);
+    }
+
+
+    private void OnTriggerExit(Collider other)
+    {
+
+        if (((1 << other.gameObject.layer) & includeMask) == 0) return;
+
+        Debug.Log("LOST");
+        OnObjectLost?.Invoke();
     }
 }

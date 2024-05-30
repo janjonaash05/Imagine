@@ -8,8 +8,8 @@ public class EnemyMovement : MonoBehaviour
 
 
 
-    [SerializeField] float speed;
-    Rigidbody rb;
+    [SerializeField] private float speed;
+    private Rigidbody rb;
 
     private PlayerController player;
 
@@ -26,7 +26,7 @@ public class EnemyMovement : MonoBehaviour
 
     private Dictionary<MovementType, MovementAdjust> typeAdjustDict;
 
-    [SerializeField] MovementType type;
+    [SerializeField] private MovementType type;
     private MovementAdjust typeAdjust;
 
     private void Start()

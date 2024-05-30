@@ -42,7 +42,7 @@ public class EnemyMovement : MonoBehaviour
 
 
         typeAdjust = typeAdjustDict[type];
-
+        player = PlayerController.Instance;
     }
 
 
@@ -54,16 +54,19 @@ public class EnemyMovement : MonoBehaviour
 
 
     }
+
+    
     private void FixedUpdate()
     {
-        player = PlayerController.Instance;
+
+
+     
+            
         var direction = new Vector3(player.PlayerPosition.x, rb.position.y, player.PlayerPosition.z) - rb.position;
 
 
 
         rb.MovePosition(rb.position + (speed * Time.fixedDeltaTime * direction));
-
-        //rb.position = new(rb.position.x, (Mathf.Sin(Time.fixedTime) * speed * 10 * Time.fixedDeltaTime) + startY, rb.position.z);
 
         rb.position = typeAdjust(rb);
 
@@ -71,6 +74,10 @@ public class EnemyMovement : MonoBehaviour
     }
 
 
+    
+
+
+   
 
 
 

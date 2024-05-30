@@ -2,17 +2,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Health : MonoBehaviour
+public abstract class Health : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] protected int baseHealth;
+    protected int health;
+    private void Start()
     {
-        
+        health = baseHealth;
     }
 
-    // Update is called once per frame
-    void Update()
+
+
+    public void Damage() 
     {
-        
+        health--;
+
+        if (health <= 0) Death();
     }
+
+    public abstract void Death();
+
+    public virtual void MidDamageAction() { }
+
+
+
+
 }

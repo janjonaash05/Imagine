@@ -28,6 +28,9 @@ public class PlayerController : MonoBehaviour
     private InputAction shoot;
     private InputAction cam;
 
+    public InputAction CameraAction => cam;
+
+
     public Vector3 PlayerPosition { get; private set; }
 
 
@@ -36,6 +39,7 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null) Instance = this;
         inputs = new PlayerInputs();
 
     }
@@ -47,7 +51,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        if (Instance == null) Instance = this;
+        
         
 
         move = inputs.Player.Movement;

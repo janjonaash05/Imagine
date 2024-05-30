@@ -43,14 +43,14 @@ public class ProjectileMovement : MonoBehaviour
 
     /*
      *  if(((1<<other.gameObject.layer) & includeLayers) != 0)
-   {
+        {
        //It matched one
-   }
+        }
 
-   if(((1<<other.gameObject.layer) & ignoreLayers) == 0)
-   {
+        if(((1<<other.gameObject.layer) & ignoreLayers) == 0)
+        {
         //It wasn't in an ignore layer
-   }
+        }
      * 
      * 
      * 
@@ -63,7 +63,7 @@ public class ProjectileMovement : MonoBehaviour
 
         if ((1 << collider.gameObject.layer & hitMask) != 0)
         {
-            Debug.LogWarning("hit sth");    
+            collider.GetComponent<Health>().Damage();
         }
 
         Destroy(gameObject);

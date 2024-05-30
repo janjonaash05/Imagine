@@ -21,8 +21,21 @@ public class Shooting : MonoBehaviour
     {
         collider = GetComponent<Collider>();
         radiusDetection.OnObjectCaught += (g) => StartCoroutine(StartShooting(g));
-        radiusDetection.OnObjectLost += () => { StopAllCoroutines(); ableToAutoShoot = true; };
+        radiusDetection.OnObjectLost += StopShooting;
     }
+
+
+    private void OnDestroy()
+    {
+        radiusDetection.OnObjectLost -= StopShooting;
+    }
+
+
+    private void StopShooting() 
+    {
+        StopAllCoroutines(); ableToAutoShoot = true;
+    }
+
 
     private IEnumerator StartShooting(GameObject g) 
    {
@@ -33,8 +46,7 @@ public class Shooting : MonoBehaviour
         WaitForSeconds delay = new(1/fireRate);
         while (true)
         {
-            Debug.LogError("shooting");
-            ShootAt(g);
+            ShootAt(g.transform.position);
             yield return delay;
         
 
@@ -44,16 +56,19 @@ public class Shooting : MonoBehaviour
    }
 
 
-    private void ShootAt(GameObject g) 
+    private void ShootAt(Vector3 target)
     {
         var projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
-        Physics.IgnoreCollision(projectile.GetComponent<Collider>(), collider, true);
+
+        if (collider != null) Physics.IgnoreCollision(projectile.GetComponent<Collider>(), collider, true);
 
 
-        Debug.Log("shooting "+  (TryGetComponent<EnemyID>(out EnemyID component) ? component.Type : "" )   );
+      //  Debug.Log("shooting " + (TryGetComponent(out EnemyID component) ? component.Type : ""));
         var movement = projectile.GetComponent<ProjectileMovement>();
         movement.EnableCollision();
-        movement.SetDirection((g.transform.position - transform.position).normalized);
+        movement.SetDirection((target - transform.position).normalized);
+
+        Destroy(projectile, projectileDeathTimeout);
 
        
 

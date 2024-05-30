@@ -2,17 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyHealth : MonoBehaviour
+public class EnemyHealth : Health
 {
-    // Start is called before the first frame update
-    void Start()
+
+    [SerializeField] private ParticleSystem deathPs;
+
+   private bool inDeath = false;
+
+
+    public override void Death()
     {
-        
+        if (inDeath) return;
+        inDeath = true;
+
+        PlayerHUD.Instance.AddKill(GetComponent<EnemyID>().Type);
+
+        var rend = deathPs.GetComponent<ParticleSystemRenderer>();
+        rend.material = GetComponent<Renderer>().material;
+
+        Destroy(GetComponent<Collider>());
+        Destroy(GetComponent<Shooting>());
+        Destroy(GetComponent<Renderer>());
+        StartCoroutine(PlayDeathPS());
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator PlayDeathPS()
     {
-        
+        var emission = deathPs.emission;
+        emission.enabled = true;
+
+        deathPs.Play();
+        yield return new WaitForSeconds(deathPs.main.duration);
+        Destroy(gameObject);
+
+
     }
+
 }

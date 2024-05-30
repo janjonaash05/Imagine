@@ -8,7 +8,7 @@ public class RadiusDetection : MonoBehaviour
     public event Action<GameObject> OnObjectCaught;
     public event Action OnObjectLost;
 
-    [SerializeField] LayerMask includeMask; 
+    [SerializeField] LayerMask includeMask;
 
     private SphereCollider coll;
 
@@ -21,13 +21,15 @@ public class RadiusDetection : MonoBehaviour
 
     }
 
-
-
+    private bool inTrigger = false;
+    private Collider otherCollider;
     private void OnTriggerEnter(Collider other)
     {
         if (((1 << other.gameObject.layer) & includeMask) == 0) return;
 
-            Debug.Log("CAUGHT");
+        inTrigger = true;
+        otherCollider = other;
+        Debug.Log("CAUGHT");
         OnObjectCaught?.Invoke(other.gameObject);
     }
 
@@ -37,7 +39,21 @@ public class RadiusDetection : MonoBehaviour
 
         if (((1 << other.gameObject.layer) & includeMask) == 0) return;
 
+        inTrigger = false;
+        otherCollider = null;
         Debug.Log("LOST");
         OnObjectLost?.Invoke();
+    }
+
+
+
+    private void Update()
+    {
+        if (inTrigger && otherCollider == null) 
+        {
+            inTrigger = false;
+            OnObjectLost?.Invoke();
+
+        }
     }
 }

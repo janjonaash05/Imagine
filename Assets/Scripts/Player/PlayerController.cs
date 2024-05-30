@@ -17,114 +17,132 @@ public class PlayerController : MonoBehaviour
 
 
 
-    
-
-        private Rigidbody rb;
-        private PlayerInputs inputs;
-
-        private InputAction move;
-        private InputAction jump;
-        private InputAction shoot;
-        private InputAction cam;
 
 
+    private Rigidbody rb;
+    private PlayerInputs inputs;
 
-        private void Awake()
-        {
-            inputs = new PlayerInputs();
-        }
+    private InputAction move;
+    private InputAction jump;
+    private InputAction shoot;
+    private InputAction cam;
 
-        private void OnEnable()
-        {
-            move = inputs.Player.Movement;
-            jump = inputs.Player.Jump;
-            shoot = inputs.Player.Shoot;
-            cam = inputs.Player.Camera;
-
-            move.Enable();
-            jump.Enable();
-            shoot.Enable();
-            cam.Enable();
-        }
+    public Vector3 PlayerPosition { get; private set; }
 
 
-        private void OnDisable()
-        {
-
-            move.Disable();
-            jump.Disable();
-            shoot.Disable();
-            cam.Disable();
-        }
-
-        void Start()
-        {
-            rb = GetComponent<Rigidbody>();
-            UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+    public static PlayerController Instance { get; private set; }
 
 
+    private void Awake()
+    {
+        inputs = new PlayerInputs();
 
-            grounded = true;
-            jump.performed += Jump;
-        }
+    }
 
-        private Vector2 moveDir;
-        private Vector2 camTurn;
-        [SerializeField] LayerMask mask;
-        [SerializeField] float moveSpeed;
-        [SerializeField] float jumpSpeed;
+    private void OnDestroy()
+    {
+        Instance = null;
+    }
 
-
-        void Update()
-        {
-            moveDir = move.ReadValue<Vector2>();
-            camTurn += cam.ReadValue<Vector2>();
-        }
-
+    private void OnEnable()
+    {
+        if (Instance == null) Instance = this;
         
 
-        private void FixedUpdate()
-        {
-            
+        move = inputs.Player.Movement;
+        jump = inputs.Player.Jump;
+        shoot = inputs.Player.Shoot;
+        cam = inputs.Player.Camera;
 
-           // Debug.DrawRay(rb.position, -transform.up * 5, Color.green);
-            if (Physics.Raycast(rb.position, -transform.up, 1f, mask))
-            {
-                grounded = true;
-            }
-
-        Debug.Log(grounded);
-
-            rb.velocity = moveSpeed * Time.fixedDeltaTime * ((transform.forward * moveDir.y) + (transform.right * moveDir.x));
-            
-            
+        move.Enable();
+        jump.Enable();
+        shoot.Enable();
+        cam.Enable();
+    }
 
 
-            rb.rotation = Quaternion.Euler(0, camTurn.x, 0); ;
+    private void OnDisable()
+    {
+
+        move.Disable();
+        jump.Disable();
+        shoot.Disable();
+        cam.Disable();
+    }
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
 
 
 
-
-            Debug.Log(moveDir);
-        }
-
-
-        private bool grounded;
-        private void Jump(InputAction.CallbackContext context)
-        {
-        if (grounded)
-        {
-            Debug.LogError("JUMP");
-            grounded = false;
-
-            rb.AddForce(jumpSpeed * Vector3.up,ForceMode.Impulse);
-                
-
-            }
-        }
+        grounded = true;
+        jump.performed += Jump;
 
 
 
 
 
     }
+
+    private Vector2 moveDir;
+    private Vector2 camTurn;
+    [SerializeField] LayerMask mask;
+    [SerializeField] float moveSpeed;
+    [SerializeField] float jumpSpeed;
+
+
+    void Update()
+    {
+        moveDir = move.ReadValue<Vector2>();
+        camTurn += cam.ReadValue<Vector2>();
+    }
+
+
+
+    private void FixedUpdate()
+    {
+        PlayerPosition = rb.position;
+
+        // Debug.DrawRay(rb.position, -transform.up * 5, Color.green);
+        if (Physics.Raycast(rb.position, -transform.up, 1f, mask))
+        {
+            grounded = true;
+        }
+
+        Debug.Log(grounded);
+
+        rb.velocity = moveSpeed * Time.fixedDeltaTime * ((transform.forward * moveDir.y) + (transform.right * moveDir.x));
+
+
+
+
+        rb.rotation = Quaternion.Euler(0, camTurn.x, 0); ;
+
+
+
+
+        Debug.Log(moveDir);
+    }
+
+
+    private bool grounded;
+    private void Jump(InputAction.CallbackContext context)
+    {
+        if (grounded)
+        {
+            Debug.LogError("JUMP");
+            grounded = false;
+
+            rb.AddForce(jumpSpeed * Vector3.up, ForceMode.Impulse);
+
+
+        }
+    }
+
+
+
+
+
+}

@@ -8,7 +8,7 @@ public class Shooting : MonoBehaviour
     [SerializeField] GameObject projectilePrefab;
     void Start()
     {
-        radiusDetection.OnObjectCaught +=()    
+        
     }
 
 

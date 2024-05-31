@@ -1,79 +1,109 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class Shooting : MonoBehaviour
 {
-    [SerializeField] private RadiusDetection radiusDetection;
-    [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] float projectileDeathTimeout;
-    [SerializeField] float fireRate;
-
-    
-
-    private bool ableToAutoShoot = true;
-    private Collider collider;
+    protected RadiusDetection radiusDetection;
+    [SerializeField] protected GameObject projectilePrefab;
+    [SerializeField] protected float projectileDeathTimeout;
+    [SerializeField] protected float fireRate;
 
 
 
-    private void Start()
+    private Coroutine autoShootingCoroutine;
+
+
+    protected bool ableToAutoShoot = true;
+    protected bool manuallyShooting = false;
+
+    protected WaitForSeconds delay;
+
+    private void Awake()
     {
-        collider = GetComponent<Collider>();
-        radiusDetection.OnObjectCaught += (g) => StartCoroutine(StartShooting(g));
-        radiusDetection.OnObjectLost += StopShooting;
+
+        radiusDetection = GetComponent<RadiusDetection>();
+        delay = new(1f/fireRate);
+        Assert.IsNotNull(projectilePrefab);
+        Assert.IsTrue(projectileDeathTimeout > 0);
+        Assert.IsTrue(fireRate > 0);
+    }
+
+
+
+    protected virtual void Start()
+    {
+        
+        
+        radiusDetection.OnObjectCaught += StartAutoShooting;
+        radiusDetection.OnObjectLost += StopAutoShooting;
     }
 
 
     private void OnDestroy()
     {
-        radiusDetection.OnObjectLost -= StopShooting;
+        radiusDetection.OnObjectCaught -= StartAutoShooting;
+        radiusDetection.OnObjectLost -= StopAutoShooting;
     }
 
 
-    private void StopShooting() 
+    protected void StopAutoShooting()
     {
-        StopAllCoroutines(); ableToAutoShoot = true;
+        if(autoShootingCoroutine != null)
+        StopCoroutine(autoShootingCoroutine); 
+        
+        ableToAutoShoot = true;
     }
 
 
-    private IEnumerator StartShooting(GameObject g) 
-   {
-        if (!ableToAutoShoot) yield break;
+    protected void StartAutoShooting(GameObject targetObject)
+    {
+        if (!ableToAutoShoot || manuallyShooting) return;
 
+      autoShootingCoroutine =  StartCoroutine(StartShootingEnumerator(targetObject));
+    }
+
+
+    protected IEnumerator StartShootingEnumerator(GameObject g)
+    {
         ableToAutoShoot = false;
 
-        WaitForSeconds delay = new(1/fireRate);
+
+        //var delay = new WaitForSeconds(1f / fireRate);
         while (true)
         {
+            if (g == null) {  ableToAutoShoot = true; yield break; }
+
             ShootAt(g.transform.position);
+
+
             yield return delay;
-        
+
 
         }
-    
-    
-   }
 
 
-    private void ShootAt(Vector3 target)
+    }
+
+
+    protected void ShootAt(Vector3 target)
     {
         var projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
 
-        if (collider != null) Physics.IgnoreCollision(projectile.GetComponent<Collider>(), collider, true);
+        if (GetComponent<Collider>() != null) Physics.IgnoreCollision(projectile.GetComponent<Collider>(), GetComponent<Collider>(), true);
 
 
-      //  Debug.Log("shooting " + (TryGetComponent(out EnemyID component) ? component.Type : ""));
         var movement = projectile.GetComponent<ProjectileMovement>();
         movement.EnableCollision();
         movement.SetDirection((target - transform.position).normalized);
+        movement.Launch();
 
         Destroy(projectile, projectileDeathTimeout);
 
-       
+
 
     }
 
 
-  
+
 }

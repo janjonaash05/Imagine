@@ -1,21 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class EnemyHealth : Health
 {
 
-    [SerializeField] private ParticleSystem deathPs;
-
-   private bool inDeath = false;
+   
 
 
-    public override void Death()
+
+    
+
+    public override void AfterDeathAction()
     {
+        /*
         if (inDeath) return;
         inDeath = true;
 
-        PlayerHUD.Instance.AddKill(GetComponent<EnemyID>().Type);
+        
+
+
+     
 
         var rend = deathPs.GetComponent<ParticleSystemRenderer>();
         rend.material = GetComponent<Renderer>().material;
@@ -24,8 +30,13 @@ public class EnemyHealth : Health
         Destroy(GetComponent<Shooting>());
         Destroy(GetComponent<Renderer>());
         StartCoroutine(PlayDeathPS());
+        */
+
+
+        PlayerHUD.Instance.AddKill(GetComponent<EnemyID>().Type);
     }
 
+    /*
     private IEnumerator PlayDeathPS()
     {
         var emission = deathPs.emission;
@@ -37,5 +48,5 @@ public class EnemyHealth : Health
 
 
     }
-
+    */
 }

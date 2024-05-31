@@ -29,11 +29,11 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Movement"",
-                    ""type"": ""Value"",
+                    ""type"": ""Button"",
                     ""id"": ""3e26d29e-243d-4f4c-aa6c-6daba480e3cf"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""initialStateCheck"": true
                 },
                 {
@@ -52,7 +52,7 @@ public partial class @PlayerInputs: IInputActionCollection2, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Camera"",

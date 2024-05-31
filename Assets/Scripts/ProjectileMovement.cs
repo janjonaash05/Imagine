@@ -32,14 +32,23 @@ public class ProjectileMovement : MonoBehaviour
     public void EnableCollision() => collider.enabled = true;
     public void SetDirection(Vector3 dir) => this.dir = dir;
 
+
+    public void Launch()
+    {
+       
+        rb.AddForce(speed * Time.fixedDeltaTime * dir);
+    
+    }
+
+    /*
     void FixedUpdate()
     {
 
 
-        rb.MovePosition(rb.position + speed * Time.fixedDeltaTime * dir);
+        rb.MovePosition(rb.position + );
 
     }
-
+    */
 
     /*
      *  if(((1<<other.gameObject.layer) & includeLayers) != 0)

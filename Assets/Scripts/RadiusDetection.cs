@@ -8,52 +8,58 @@ public class RadiusDetection : MonoBehaviour
     public event Action<GameObject> OnObjectCaught;
     public event Action OnObjectLost;
 
-    [SerializeField] LayerMask includeMask;
+    
 
-    private SphereCollider coll;
+    [SerializeField] private LayerMask includeMask;
 
-    [SerializeField] float radius;
+    
 
-    private void Start()
-    {
-        coll = GetComponent<SphereCollider>();
-        coll.radius = radius;
+    [SerializeField] private float radius;
 
-    }
 
-    private bool inTrigger = false;
-    private Collider otherCollider;
     private void OnTriggerEnter(Collider other)
     {
+        /*
         if (((1 << other.gameObject.layer) & includeMask) == 0) return;
+
+
+
 
         inTrigger = true;
         otherCollider = other;
-        Debug.Log("CAUGHT");
+
         OnObjectCaught?.Invoke(other.gameObject);
+        */
     }
 
 
     private void OnTriggerExit(Collider other)
     {
-
+        /*
         if (((1 << other.gameObject.layer) & includeMask) == 0) return;
 
+
+
+
         inTrigger = false;
-        otherCollider = null;
-        Debug.Log("LOST");
+
+
         OnObjectLost?.Invoke();
+        */
     }
 
 
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if (inTrigger && otherCollider == null) 
+        var result = Physics.OverlapSphere(transform.position, radius, includeMask,QueryTriggerInteraction.Ignore);
+        if (result.Length == 0)
         {
-            inTrigger = false;
             OnObjectLost?.Invoke();
-
         }
+        else OnObjectCaught?.Invoke(result[0].gameObject);
     }
+
+
+   
 }

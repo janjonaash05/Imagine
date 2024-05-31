@@ -8,19 +8,23 @@ public class EnemyMovement : MonoBehaviour
 
 
 
-    [SerializeField] private float speed;
-    private Rigidbody rb;
+    [SerializeField] protected float speed;
+    protected Rigidbody rb;
 
     private PlayerController player;
 
 
-    private float startY;
+    protected float startY;
+
+    [SerializeField] private float stopDistance;
+    [SerializeField] private LayerMask stopMask;
+
+    private delegate Vector3 MovementAdjust();
+
+    private RadiusDetection radiusDetection;
 
 
-
-   private delegate Vector3 MovementAdjust(Rigidbody r);
-
-
+    /*
     public enum MovementType {REGULAR, SIN }
 
 
@@ -28,26 +32,21 @@ public class EnemyMovement : MonoBehaviour
 
     [SerializeField] private MovementType type;
     private MovementAdjust typeAdjust;
+    */
+
 
     private void Start()
     {
 
-       
-
-        typeAdjustDict = new()
-        {
-            { MovementType.REGULAR, (x) => x.position },
-            { MovementType.SIN, (x) => new(rb.position.x, (Mathf.Sin(Time.fixedTime) * speed * 10 * Time.fixedDeltaTime) + startY, rb.position.z)  }
-        };
-
-
-        typeAdjust = typeAdjustDict[type];
         player = PlayerController.Instance;
     }
 
 
     private void Awake()
     {
+        
+        
+
 
         rb = GetComponent<Rigidbody>();
         startY = rb.position.y;
@@ -59,18 +58,29 @@ public class EnemyMovement : MonoBehaviour
     private void FixedUpdate()
     {
 
+        
+         
 
      
             
         var direction = new Vector3(player.PlayerPosition.x, rb.position.y, player.PlayerPosition.z) - rb.position;
 
 
+        if (Physics.OverlapSphereNonAlloc(transform.position, stopDistance, null, stopMask, QueryTriggerInteraction.Collide) == 0)
+        {
+            rb.MovePosition(rb.position + (speed * Time.fixedDeltaTime * direction));
+        }
 
-        rb.MovePosition(rb.position + (speed * Time.fixedDeltaTime * direction));
 
-        rb.position = typeAdjust(rb);
+        rb.position = AfterMoveAdjust();
 
 
+    }
+
+
+    protected virtual Vector3 AfterMoveAdjust() 
+    {
+        return new(rb.position.x, startY, rb.position.z);
     }
 
 

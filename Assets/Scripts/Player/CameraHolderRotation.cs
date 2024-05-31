@@ -21,7 +21,7 @@ public class CameraHolderRotation : MonoBehaviour
     private void Update()
     {
         camTurn += controller.CameraAction.ReadValue<Vector2>();
-        Debug.Log(camTurn);
+        
         camTurn.y =  Mathf.Clamp(camTurn.y, camClamp.x, camClamp.y);
         transform.localRotation = Quaternion.Euler(-camTurn.y, 0, 0);
 

@@ -97,7 +97,7 @@ public class PlayerHUD : MonoBehaviour
 
     public void UpdateHPLabel(int health)
     {
-        hpLabel.text = baseHealth + "/" + health;
+        hpLabel.text = health + "/" + baseHealth;
     }
 
 

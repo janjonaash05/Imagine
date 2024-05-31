@@ -2,13 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.UIElements;
-using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.HID;
-using UnityEngine.UIElements;
 using System;
 
 
@@ -78,14 +71,20 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+      
 
 
 
         grounded = true;
         jump.performed += Jump;
 
-        shoot.performed += (_) => OnPlayerAttemptShot?.Invoke();
+        shoot.started += (c) =>
+        {
+            
+            OnPlayerShootingStart?.Invoke();
+        };
+            shoot.canceled += (c) => OnPlayerShootingEnd?.Invoke();
+        
 
 
 
@@ -93,7 +92,7 @@ public class PlayerController : MonoBehaviour
 
 
 
-    public event Action OnPlayerAttemptShot;
+    public event Action OnPlayerShootingStart, OnPlayerShootingEnd;
 
 
     private Vector2 moveDir;
@@ -106,7 +105,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         moveDir = move.ReadValue<Vector2>();
-        camTurn += cam.ReadValue<Vector2>();
+        //camTurn += cam.ReadValue<Vector2>();
     }
 
 
@@ -115,7 +114,6 @@ public class PlayerController : MonoBehaviour
     {
         PlayerPosition = rb.position;
 
-        // Debug.DrawRay(rb.position, -transform.up * 5, Color.green);
         if (Physics.Raycast(rb.position, -transform.up, 1f, mask))
         {
             grounded = true;
@@ -128,7 +126,7 @@ public class PlayerController : MonoBehaviour
 
 
 
-        rb.rotation = Quaternion.Euler(0, camTurn.x, 0); ;
+      //  rb.rotation = Quaternion.Euler(0, camTurn.x, 0); ;
 
 
 
@@ -145,7 +143,7 @@ public class PlayerController : MonoBehaviour
            
             grounded = false;
 
-            rb.AddForce(jumpSpeed * Vector3.up, ForceMode.Impulse);
+            rb.AddForce(jumpSpeed * Time.fixedDeltaTime * Vector3.up, ForceMode.Impulse);
 
 
         }

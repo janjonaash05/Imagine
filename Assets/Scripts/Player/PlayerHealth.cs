@@ -7,7 +7,7 @@ public class PlayerHealth : Health
 {
     
 
-    public override void Death()
+    public override void AfterDeathAction()
     {
 
         SceneManager.LoadScene(0);
@@ -21,6 +21,7 @@ public class PlayerHealth : Health
 
     public override void MidDamageAction()
     {
+       
         PlayerHUD.Instance.UpdateHPLabel(health);
     }
 

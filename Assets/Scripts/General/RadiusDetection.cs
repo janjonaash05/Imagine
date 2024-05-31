@@ -17,36 +17,7 @@ public class RadiusDetection : MonoBehaviour
     [SerializeField] private float radius;
 
 
-    private void OnTriggerEnter(Collider other)
-    {
-        /*
-        if (((1 << other.gameObject.layer) & includeMask) == 0) return;
-
-
-
-
-        inTrigger = true;
-        otherCollider = other;
-
-        OnObjectCaught?.Invoke(other.gameObject);
-        */
-    }
-
-
-    private void OnTriggerExit(Collider other)
-    {
-        /*
-        if (((1 << other.gameObject.layer) & includeMask) == 0) return;
-
-
-
-
-        inTrigger = false;
-
-
-        OnObjectLost?.Invoke();
-        */
-    }
+  
 
 
 
@@ -57,7 +28,13 @@ public class RadiusDetection : MonoBehaviour
         {
             OnObjectLost?.Invoke();
         }
-        else OnObjectCaught?.Invoke(result[0].gameObject);
+
+        else if (result[0].gameObject != null) 
+        {
+            OnObjectCaught?.Invoke(result[0].gameObject);
+        }
+
+       
     }
 
 

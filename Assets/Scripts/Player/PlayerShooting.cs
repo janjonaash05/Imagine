@@ -12,8 +12,13 @@ public class PlayerShooting : Shooting
 
     private Coroutine manuallyShootingCoroutine;
 
-    [SerializeField] float upwardsTilt;
+    [SerializeField]
+    private LayerMask cameraContactMask;
+    [SerializeField]
+    private float manualShootingOffsetY;
 
+    [SerializeField]
+    private Vector3 cameraColliderSize;
 
     protected override void Start()
     {
@@ -22,16 +27,47 @@ public class PlayerShooting : Shooting
 
         controller.OnPlayerShootingStart += StartManuallyShooting;
         controller.OnPlayerShootingEnd += StopManuallyShooting;
-        
+
+        CreateCameraCollider();
 
 
-        
     }
 
-    private void OnDestroy()
-    {
-        controller.OnPlayerShootingStart -= StartManuallyShooting;
 
+
+    [SerializeField] private int layerIndex;
+    private void CreateCameraCollider()
+    {
+        var holder = new GameObject
+        {
+            layer = layerIndex,
+        };
+
+
+
+
+        holder.AddComponent<BoxCollider>();
+        var collider = holder.GetComponent<BoxCollider>();
+        collider.enabled = true;
+        collider.isTrigger = true;
+        collider.size = cameraColliderSize;
+        collider.transform.position = transform.position + manualShootingOffsetY * Vector3.up;
+
+        holder.transform.parent = transform;
+
+
+
+
+    }
+
+
+
+
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        controller.OnPlayerShootingStart -= StartManuallyShooting;
         controller.OnPlayerShootingEnd -= StopManuallyShooting;
     }
 
@@ -40,11 +76,12 @@ public class PlayerShooting : Shooting
     {
 
         manuallyShooting = true;
+        StopAutoShooting();
         manuallyShootingCoroutine = StartCoroutine(ShootingEnumerator());
 
     }
 
-    private void StopManuallyShooting() 
+    private void StopManuallyShooting()
     {
 
         manuallyShooting = false;
@@ -56,28 +93,39 @@ public class PlayerShooting : Shooting
 
     private IEnumerator ShootingEnumerator()
     {
-           
-       
+
+
         while (true)
         {
 
-            Vector2 target = Camera.main.ScreenToViewportPoint(Mouse.current.position.ReadValue());
 
-            ShootAt(transform.position + new Vector3(target.x-0.5f, upwardsTilt,target.y-0.5f));
 
-           
+
+
+            var ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+
+            Debug.DrawRay(ray.origin, ray.direction * 100, Color.green);
+            Physics.Raycast(ray, out var hit, 100, cameraContactMask);
+
+
+
+
+
+            Shoot(
+                new(transform.position.x, transform.position.y + manualShootingOffsetY, transform.position.z),
+                 new(hit.point.x, transform.position.y + manualShootingOffsetY, hit.point.z));
 
 
             yield return delay;
-            
+
 
 
         }
 
-    
-    
+
+
     }
-    
+
 
 
 }

@@ -181,6 +181,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseHealth: 5
   deathPS: {fileID: 2854871432157151568}
+  healthPickupPrefab: {fileID: 3729890190628577545, guid: 7041f94a51b12d54ba5b96af9dfca871, type: 3}
+  healthPickupAmount: 2
 --- !u!114 &2824270809957085443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -209,13 +211,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1083799be0f25b34a8233622fb22c68b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 2
   stopDistance: 0
   stopMask:
     serializedVersion: 2
     m_Bits: 0
-  frequency: 15
-  waveMultiplier: 20
+  frequency: 5
+  waveMultiplier: 5
 --- !u!1 &8732165642404740254
 GameObject:
   m_ObjectHideFlags: 0

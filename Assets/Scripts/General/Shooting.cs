@@ -40,7 +40,7 @@ public class Shooting : MonoBehaviour
     }
 
 
-    private void OnDestroy()
+    protected virtual void OnDestroy()
     {
         radiusDetection.OnObjectCaught -= StartAutoShooting;
         radiusDetection.OnObjectLost -= StopAutoShooting;
@@ -49,8 +49,7 @@ public class Shooting : MonoBehaviour
 
     protected void StopAutoShooting()
     {
-        if(autoShootingCoroutine != null)
-        StopCoroutine(autoShootingCoroutine); 
+        if(autoShootingCoroutine != null) StopCoroutine(autoShootingCoroutine); 
         
         ableToAutoShoot = true;
     }
@@ -68,13 +67,11 @@ public class Shooting : MonoBehaviour
     {
         ableToAutoShoot = false;
 
-
-        //var delay = new WaitForSeconds(1f / fireRate);
         while (true)
         {
             if (g == null) {  ableToAutoShoot = true; yield break; }
 
-            ShootAt(g.transform.position);
+            ShootFromCenter(g.transform.position);
 
 
             yield return delay;
@@ -86,16 +83,27 @@ public class Shooting : MonoBehaviour
     }
 
 
-    protected void ShootAt(Vector3 target)
+
+
+    protected void ShootFromCenter(Vector3 target)
     {
-        var projectile = Instantiate(projectilePrefab, transform.position, transform.rotation);
+        SummonBullet(transform.position, target);
+    }
+
+    protected void Shoot(Vector3 origin, Vector3 target) => SummonBullet(origin, target);
+
+
+
+    private void SummonBullet(Vector3 origin,Vector3 target) 
+    {
+        var projectile = Instantiate(projectilePrefab, origin, transform.rotation);
 
         if (GetComponent<Collider>() != null) Physics.IgnoreCollision(projectile.GetComponent<Collider>(), GetComponent<Collider>(), true);
 
 
         var movement = projectile.GetComponent<ProjectileMovement>();
         movement.EnableCollision();
-        movement.SetDirection((target - transform.position).normalized);
+        movement.SetDirection((target - origin).normalized);
         movement.Launch();
 
         Destroy(projectile, projectileDeathTimeout);

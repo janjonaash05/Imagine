@@ -44,8 +44,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnEnable()
     {
-        
-        
+
+
 
         move = inputs.Player.Movement;
         jump = inputs.Player.Jump;
@@ -59,6 +59,12 @@ public class PlayerController : MonoBehaviour
     }
 
 
+
+    public void DisableExternal()
+    {
+        OnDisable();
+    }
+
     private void OnDisable()
     {
 
@@ -68,10 +74,10 @@ public class PlayerController : MonoBehaviour
         cam.Disable();
     }
 
-    void Start()
+    private void Start()
     {
         rb = GetComponent<Rigidbody>();
-      
+
 
 
 
@@ -80,11 +86,11 @@ public class PlayerController : MonoBehaviour
 
         shoot.started += (c) =>
         {
-            
+            if (c.canceled) return;
             OnPlayerShootingStart?.Invoke();
         };
-            shoot.canceled += (c) => OnPlayerShootingEnd?.Invoke();
-        
+        shoot.canceled += (c) => OnPlayerShootingEnd?.Invoke();
+
 
 
 
@@ -96,13 +102,14 @@ public class PlayerController : MonoBehaviour
 
 
     private Vector2 moveDir;
-    private Vector2 camTurn;
-    [SerializeField] private LayerMask mask;
+
+    [SerializeField] private LayerMask groundMask;
     [SerializeField] private float moveSpeed;
     [SerializeField] private float jumpSpeed;
+    [SerializeField] private float groundingDistance;
 
 
-    void Update()
+    private void Update()
     {
         moveDir = move.ReadValue<Vector2>();
         //camTurn += cam.ReadValue<Vector2>();
@@ -114,39 +121,48 @@ public class PlayerController : MonoBehaviour
     {
         PlayerPosition = rb.position;
 
-        if (Physics.Raycast(rb.position, -transform.up, 1f, mask))
+        Debug.DrawRay(transform.position, Vector3.down*groundingDistance, Color.magenta);
+        if (Physics.Raycast(transform.position, Vector3.down, groundingDistance, groundMask))
         {
+            Debug.Log("grounded");
             grounded = true;
         }
 
-      
-
-        rb.velocity = moveSpeed * Time.fixedDeltaTime * ((transform.forward * moveDir.y) + (transform.right * moveDir.x));
 
 
 
 
-      //  rb.rotation = Quaternion.Euler(0, camTurn.x, 0); ;
+        var rbY = rb.velocity.y;
+
+        rb.velocity =
+        rbY * Vector3.up +
+        moveSpeed * Time.fixedDeltaTime * ((transform.forward * moveDir.y) + (transform.right * moveDir.x));
 
 
 
 
-       
+
+
+
+
+
+
     }
 
 
     private bool grounded;
     private void Jump(InputAction.CallbackContext context)
     {
-        if (grounded)
-        {
-           
-            grounded = false;
-
-            rb.AddForce(jumpSpeed * Time.fixedDeltaTime * Vector3.up, ForceMode.Impulse);
+        if (!grounded) return;
 
 
-        }
+        grounded = false;
+
+        
+        rb.AddForce(jumpSpeed * Time.fixedDeltaTime * Vector3.up, ForceMode.Impulse);
+
+
+
     }
 
 

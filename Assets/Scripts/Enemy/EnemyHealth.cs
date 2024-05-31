@@ -6,47 +6,24 @@ using UnityEngine.Assertions;
 public class EnemyHealth : Health
 {
 
-   
+    [SerializeField] private GameObject healthPickupPrefab;
+    [SerializeField] private int healthPickupAmount;
 
+
+    protected override void MidDeathAction()
+    {
+        PlayerHUD.Instance.AddKill(GetComponent<EnemyID>().Type);
+
+        var r = new System.Random();
+        for (int i = 0; i < healthPickupAmount; i++)
+        {
+           var drop = Instantiate(healthPickupPrefab, transform.position,transform.rotation);
+           var dropDirection = Vector3.down + Vector3.forward * ( (float) r.NextDouble() - 0.5f) + Vector3.left * ((float)r.NextDouble() - 0.5f);
+           drop.GetComponent<Rigidbody>().AddForce(dropDirection, ForceMode.Impulse);
+        }
+
+    }
 
 
     
-
-    public override void AfterDeathAction()
-    {
-        /*
-        if (inDeath) return;
-        inDeath = true;
-
-        
-
-
-     
-
-        var rend = deathPs.GetComponent<ParticleSystemRenderer>();
-        rend.material = GetComponent<Renderer>().material;
-
-        Destroy(GetComponent<Collider>());
-        Destroy(GetComponent<Shooting>());
-        Destroy(GetComponent<Renderer>());
-        StartCoroutine(PlayDeathPS());
-        */
-
-
-        PlayerHUD.Instance.AddKill(GetComponent<EnemyID>().Type);
-    }
-
-    /*
-    private IEnumerator PlayDeathPS()
-    {
-        var emission = deathPs.emission;
-        emission.enabled = true;
-
-        deathPs.Play();
-        yield return new WaitForSeconds(deathPs.main.duration);
-        Destroy(gameObject);
-
-
-    }
-    */
 }

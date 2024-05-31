@@ -17,9 +17,9 @@ TagManager:
   - EnemyOuter
   - PlayerOuter
   - EnemyBorderRadius
-  - 
-  - 
-  - 
+  - Ground
+  - CameraContact
+  - HealthPickup
   - 
   - 
   - 

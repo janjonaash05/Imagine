@@ -198,6 +198,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseHealth: 10
   deathPS: {fileID: 2854871432157151568}
+  healthPickupPrefab: {fileID: 3729890190628577545, guid: 7041f94a51b12d54ba5b96af9dfca871, type: 3}
+  healthPickupAmount: 1
 --- !u!114 &-4943034322170246875
 MonoBehaviour:
   m_ObjectHideFlags: 0

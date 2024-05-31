@@ -20,7 +20,7 @@ public class ProjectileMovement : MonoBehaviour
     private LayerMask hitMask;
 
 
-    void Awake()
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();

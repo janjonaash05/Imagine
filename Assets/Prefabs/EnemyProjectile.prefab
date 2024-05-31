@@ -123,7 +123,7 @@ MonoBehaviour:
   projectileType: 1
   ignoreMask:
     serializedVersion: 2
-    m_Bits: 1664
+    m_Bits: 9856
   hitMask:
     serializedVersion: 2
     m_Bits: 256

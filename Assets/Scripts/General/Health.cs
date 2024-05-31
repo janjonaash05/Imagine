@@ -26,7 +26,7 @@ public abstract class Health : MonoBehaviour
         health--;
         MidDamageAction();
 
-        if (health <= 0) 
+        if (health <= 0)
         {
             if (inDeath) return;
             inDeath = true;
@@ -36,32 +36,35 @@ public abstract class Health : MonoBehaviour
             Destroy(GetComponent<Renderer>());
             StartCoroutine(PlayDeathPS());
         }
-        
+
     }
 
 
-   
 
 
-private IEnumerator PlayDeathPS()
-{
-    var emission = deathPS.emission;
-    emission.enabled = true;
 
-    deathPS.Play();
-    yield return new WaitForSeconds(deathPS.main.duration);
-    Destroy(gameObject);
+    private IEnumerator PlayDeathPS()
+    {
+        var emission = deathPS.emission;
+        emission.enabled = true;
+
+        deathPS.Play();
 
 
+        MidDeathAction();
+        yield return new WaitForSeconds(deathPS.main.duration);
+        Destroy(gameObject);
         AfterDeathAction();
 
-}
+    }
 
-    
 
-    public virtual void AfterDeathAction() { }
 
-    public virtual void MidDamageAction() { }
+    protected virtual void AfterDeathAction() { }
+
+    protected virtual void MidDamageAction() { }
+
+    protected virtual void MidDeathAction() { }
 
 
 

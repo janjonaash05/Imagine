@@ -10,6 +10,30 @@ public class EnemyHealth : Health
     [SerializeField] private int healthPickupAmount;
 
 
+
+    private Renderer rend;
+
+    private new void Awake()
+    {
+        base.Awake();
+        Assert.IsNotNull(healthPickupPrefab);
+        Assert.IsTrue(healthPickupAmount >= 0);
+
+        rend = GetComponent<Renderer>();
+    }
+
+    protected override void MidDamageAction()
+    {
+        if (rend != null) 
+        {
+            var color = rend.material.color;
+            var newColor = new Color(color.r,color.g, color.b,  health/ (float) baseHealth);
+            rend.material.color = newColor;
+        }
+    }
+
+
+
     protected override void MidDeathAction()
     {
         PlayerHUD.Instance.AddKill(GetComponent<EnemyID>().Type);
@@ -24,6 +48,10 @@ public class EnemyHealth : Health
 
     }
 
+    protected override void AfterDeathAction()
+    {
+        Destroy(gameObject);
+    }
 
-    
+
 }

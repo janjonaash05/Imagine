@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 1165737819299332996}
   - component: {fileID: -9031447109953479772}
   m_Layer: 7
-  m_Name: RedEnemy
+  m_Name: Enemy3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124,11 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf3eaaf249bef1f46acef0a624c4417e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 1
-  stopDistance: 0
-  stopMask:
-    serializedVersion: 2
-    m_Bits: 0
+  speed: 0.5
 --- !u!54 &4572087533840121540
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -196,7 +192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f86a62288d0f2d4c9f914426cfa237e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 10
+  baseHealth: 30
   deathPS: {fileID: 2854871432157151568}
   healthPickupPrefab: {fileID: 3729890190628577545, guid: 7041f94a51b12d54ba5b96af9dfca871, type: 3}
   healthPickupAmount: 30
@@ -385,7 +381,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 25
+      scalar: 5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -503,7 +499,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.5
+      scalar: 0.2
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -1081,7 +1077,7 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
   EmissionModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 4
     rateOverTime:
       serializedVersion: 2
@@ -2687,7 +2683,7 @@ ParticleSystem:
       m_Bits: 4294967295
     influenceList: []
   ClampVelocityModule:
-    enabled: 0
+    enabled: 1
     x:
       serializedVersion: 2
       minMaxState: 0
@@ -2904,7 +2900,7 @@ ParticleSystem:
     inWorldSpace: 0
     multiplyDragByParticleSize: 1
     multiplyDragByParticleVelocity: 1
-    dampen: 0
+    dampen: 0.42
     drag:
       serializedVersion: 2
       minMaxState: 0

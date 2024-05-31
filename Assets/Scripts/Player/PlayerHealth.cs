@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 
 public class PlayerHealth : Health
@@ -10,6 +11,16 @@ public class PlayerHealth : Health
 
     [SerializeField] private LayerMask pickupMask;
     [SerializeField] private int healthGainedPerPickup;
+
+
+
+    private new void Awake()
+    {
+        base.Awake();
+        Assert.IsTrue(pickupMask > 0 && healthGainedPerPickup >= 0);
+    }
+
+
 
     protected override void MidDeathAction()
     {

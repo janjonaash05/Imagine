@@ -1,30 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class ProjectileMovement : MonoBehaviour
 {
-    public enum ProjectileType { FRIENDLY, ENEMY }
+
     [SerializeField] private float speed;
-    [SerializeField] private ProjectileType projectileType;
+
     private Rigidbody rb;
     private new Collider collider;
 
 
-   
+
 
     [SerializeField]
     private LayerMask ignoreMask;
 
-    [SerializeField] 
+    [SerializeField]
     private LayerMask hitMask;
+
+    private ParticleSystem deathPS;
 
 
     private void Awake()
     {
+        Assert.IsTrue(speed > 0);
+
+
         rb = GetComponent<Rigidbody>();
         collider = GetComponent<Collider>();
         collider.enabled = false;
+
+
+        deathPS = transform.GetChild(0).GetComponent<ParticleSystem>();
+        var deathPSrend = deathPS.GetComponent<ParticleSystemRenderer>();
+        var rend = GetComponent<Renderer>();
+
+        deathPSrend.material = rend.material;
+        deathPSrend.trailMaterial = rend.material;
     }
 
     private Vector3 dir;
@@ -35,35 +49,12 @@ public class ProjectileMovement : MonoBehaviour
 
     public void Launch()
     {
-       
+
         rb.AddForce(speed * Time.fixedDeltaTime * dir);
-    
-    }
-
-    /*
-    void FixedUpdate()
-    {
-
-
-        rb.MovePosition(rb.position + );
 
     }
-    */
 
-    /*
-     *  if(((1<<other.gameObject.layer) & includeLayers) != 0)
-        {
-       //It matched one
-        }
 
-        if(((1<<other.gameObject.layer) & ignoreLayers) == 0)
-        {
-        //It wasn't in an ignore layer
-        }
-     * 
-     * 
-     * 
-     */
 
     private void OnTriggerEnter(Collider collider)
     {
@@ -75,6 +66,29 @@ public class ProjectileMovement : MonoBehaviour
             collider.GetComponent<Health>().Damage();
         }
 
-        Destroy(gameObject);
+        Destroy(this.collider);
+        Destroy(GetComponent<Renderer>());
+        rb.isKinematic = true;
+        StartCoroutine(PlayDeathPS());
     }
+
+
+    private IEnumerator PlayDeathPS()
+    {
+        var emission = deathPS.emission;
+        emission.enabled = true;
+
+        deathPS.Play();
+
+
+
+        yield return new WaitForSeconds(deathPS.main.duration);
+        Destroy(gameObject);
+
+
+
+    }
+
+
+
 }

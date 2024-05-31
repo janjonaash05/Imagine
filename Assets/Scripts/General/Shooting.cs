@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -19,19 +20,20 @@ public class Shooting : MonoBehaviour
 
     protected WaitForSeconds delay;
 
-    private void Awake()
+    protected void Awake()
     {
-
-        radiusDetection = GetComponent<RadiusDetection>();
-        delay = new(1f/fireRate);
         Assert.IsNotNull(projectilePrefab);
         Assert.IsTrue(projectileDeathTimeout > 0);
         Assert.IsTrue(fireRate > 0);
+
+        radiusDetection = GetComponent<RadiusDetection>();
+        delay = new(1f/fireRate);
+        
     }
 
 
 
-    protected virtual void Start()
+    protected  void Start()
     {
         
         
@@ -40,7 +42,7 @@ public class Shooting : MonoBehaviour
     }
 
 
-    protected virtual void OnDestroy()
+    protected void OnDestroy()
     {
         radiusDetection.OnObjectCaught -= StartAutoShooting;
         radiusDetection.OnObjectLost -= StopAutoShooting;
@@ -98,7 +100,23 @@ public class Shooting : MonoBehaviour
     {
         var projectile = Instantiate(projectilePrefab, origin, transform.rotation);
 
-        if (GetComponent<Collider>() != null) Physics.IgnoreCollision(projectile.GetComponent<Collider>(), GetComponent<Collider>(), true);
+        if (GetComponent<Collider>() != null)
+        {
+            var colliders = GetComponents<Collider>().ToList();
+            foreach (var collider in colliders)
+            {
+                Physics.IgnoreCollision(projectile.GetComponent<Collider>(), collider, true);
+            }
+        }
+
+            
+
+
+            
+
+
+
+            
 
 
         var movement = projectile.GetComponent<ProjectileMovement>();

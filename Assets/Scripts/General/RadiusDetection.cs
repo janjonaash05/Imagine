@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class RadiusDetection : MonoBehaviour
 {
@@ -16,22 +17,26 @@ public class RadiusDetection : MonoBehaviour
 
     [SerializeField] private float radius;
 
+    private void Awake()
+    {
+        Assert.IsTrue(radius > 0);
+        results = new Collider[1];
+    }
 
-  
 
 
-
+    private Collider[] results;
     private void FixedUpdate()
     {
-        var result = Physics.OverlapSphere(transform.position, radius, includeMask,QueryTriggerInteraction.Ignore);
-        if (result.Length == 0)
+         
+        if (Physics.OverlapSphereNonAlloc(transform.position, radius, results, includeMask, QueryTriggerInteraction.Ignore) == 0)
         {
             OnObjectLost?.Invoke();
         }
 
-        else if (result[0].gameObject != null) 
+        else if (results[0].gameObject != null) 
         {
-            OnObjectCaught?.Invoke(result[0].gameObject);
+            OnObjectCaught?.Invoke(results[0].gameObject);
         }
 
        

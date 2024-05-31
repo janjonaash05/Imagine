@@ -23,7 +23,8 @@ public class PlayerHUD : MonoBehaviour
     private List<EnemyType> enemyTypes;
 
     [SerializeField] private float killedLabelNewEntryOffset;
-
+    private bool updated;
+    [SerializeField] private float resetDelay;
 
     public static PlayerHUD Instance { get; private set; }
 
@@ -41,9 +42,8 @@ public class PlayerHUD : MonoBehaviour
     {
         Assert.IsNotNull(killedLabel);
         Assert.IsNotNull(hpLabel);
-        Assert.IsTrue(resetDelay > 0);
-        Assert.IsTrue(killedLabelNewEntryOffset > 0);
-
+        Assert.IsTrue(resetDelay > 0 && killedLabelNewEntryOffset > 0);
+        
         if (Instance == null) Instance = this;
     }
 
@@ -125,8 +125,7 @@ public class PlayerHUD : MonoBehaviour
 
 
 
-    private bool updated;
-    [SerializeField] private float resetDelay;
+   
     private IEnumerator ResetTimer()
     {
 

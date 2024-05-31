@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -8,22 +9,22 @@ public abstract class Health : MonoBehaviour
     [SerializeField] protected int baseHealth;
     [SerializeField] private ParticleSystem deathPS;
     protected int health;
-    private void Awake()
+    protected void Awake()
     {
         health = baseHealth;
 
-
+        Assert.IsTrue(baseHealth > 0);
         Assert.IsNotNull(deathPS);
 
         var rend = deathPS.GetComponent<ParticleSystemRenderer>();
-        rend.material = GetComponent<Renderer>().material;
+        rend.material = new Material( GetComponent<Renderer>().material);
     }
 
     private bool inDeath = false;
 
     public void Damage()
     {
-        health--;
+        health-= health > 0 ? 1 :0;
         MidDamageAction();
 
         if (health <= 0)
@@ -31,7 +32,11 @@ public abstract class Health : MonoBehaviour
             if (inDeath) return;
             inDeath = true;
 
-            Destroy(GetComponent<Collider>());
+            var colliders = GetComponents<Collider>().ToList();
+            foreach (var collider in colliders)
+            {
+                Destroy(collider);
+            }
             Destroy(GetComponent<Shooting>());
             Destroy(GetComponent<Renderer>());
             StartCoroutine(PlayDeathPS());
@@ -53,7 +58,6 @@ public abstract class Health : MonoBehaviour
 
         MidDeathAction();
         yield return new WaitForSeconds(deathPS.main.duration);
-        Destroy(gameObject);
         AfterDeathAction();
 
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -16,23 +17,10 @@ public class EnemyMovement : MonoBehaviour
 
     protected float startY;
 
-    [SerializeField] private float stopDistance;
-    [SerializeField] private LayerMask stopMask;
 
     private delegate Vector3 MovementAdjust();
 
-    private RadiusDetection radiusDetection;
 
-
-    /*
-    public enum MovementType {REGULAR, SIN }
-
-
-    private Dictionary<MovementType, MovementAdjust> typeAdjustDict;
-
-    [SerializeField] private MovementType type;
-    private MovementAdjust typeAdjust;
-    */
 
 
     private void Start()
@@ -42,10 +30,10 @@ public class EnemyMovement : MonoBehaviour
     }
 
 
-    private void Awake()
+    protected void Awake()
     {
-        
-        
+        Assert.IsTrue(speed > 0);
+
 
 
         rb = GetComponent<Rigidbody>();
@@ -58,36 +46,31 @@ public class EnemyMovement : MonoBehaviour
     private void FixedUpdate()
     {
 
-        
-         
 
-     
-            
+
+
+
+
         var direction = new Vector3(player.PlayerPosition.x, rb.position.y, player.PlayerPosition.z) - rb.position;
 
 
-        if (Physics.OverlapSphereNonAlloc(transform.position, stopDistance, null, stopMask, QueryTriggerInteraction.Collide) == 0)
-        {
-            rb.MovePosition(rb.position + (speed * Time.fixedDeltaTime * direction));
-        }
-
-
+        rb.MovePosition(rb.position + (speed * Time.fixedDeltaTime * direction));
         rb.position = AfterMoveAdjust();
 
 
     }
 
 
-    protected virtual Vector3 AfterMoveAdjust() 
+    protected virtual Vector3 AfterMoveAdjust()
     {
         return new(rb.position.x, startY, rb.position.z);
     }
 
 
-    
 
 
-   
+
+
 
 
 

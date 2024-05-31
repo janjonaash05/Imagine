@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using UnityEngine.Assertions;
 
 
 public class PlayerController : MonoBehaviour
@@ -29,9 +30,22 @@ public class PlayerController : MonoBehaviour
 
     public static PlayerController Instance { get; private set; }
 
+    public event Action OnPlayerShootingStart, OnPlayerShootingEnd;
+
+
+    private Vector2 moveDir;
+
+    [SerializeField] private LayerMask groundMask;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float jumpSpeed;
+    [SerializeField] private float groundingDistance;
 
     private void Awake()
     {
+        Assert.IsTrue(moveSpeed > 0 && jumpSpeed > 0 && groundingDistance >0);
+
+
+
         if (Instance == null) Instance = this;
         inputs = new PlayerInputs();
 
@@ -98,21 +112,12 @@ public class PlayerController : MonoBehaviour
 
 
 
-    public event Action OnPlayerShootingStart, OnPlayerShootingEnd;
-
-
-    private Vector2 moveDir;
-
-    [SerializeField] private LayerMask groundMask;
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float jumpSpeed;
-    [SerializeField] private float groundingDistance;
+    
 
 
     private void Update()
     {
         moveDir = move.ReadValue<Vector2>();
-        //camTurn += cam.ReadValue<Vector2>();
     }
 
 
@@ -121,12 +126,11 @@ public class PlayerController : MonoBehaviour
     {
         PlayerPosition = rb.position;
 
-        Debug.DrawRay(transform.position, Vector3.down*groundingDistance, Color.magenta);
-        if (Physics.Raycast(transform.position, Vector3.down, groundingDistance, groundMask))
-        {
-            Debug.Log("grounded");
-            grounded = true;
-        }
+       
+
+        grounded = Physics.Raycast(transform.position, Vector3.down, groundingDistance, groundMask);
+
+        
 
 
 

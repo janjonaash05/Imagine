@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+
+
+/// <summary>
+/// Manages prefab spawning with an interval.
+/// </summary>
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] prefabs;

@@ -6,6 +6,9 @@ using System;
 using UnityEngine.Assertions;
 
 
+/// <summary>
+/// Manages events from the PlayerInput asset class, handles movement and jumping.
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
 
@@ -131,10 +134,6 @@ public class PlayerController : MonoBehaviour
         grounded = Physics.Raycast(transform.position, Vector3.down, groundingDistance, groundMask);
 
         
-
-
-
-
 
         var rbY = rb.velocity.y;
 

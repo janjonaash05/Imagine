@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+
+/// <summary>
+/// Gradually changes the player's base and emission material color over time, resembling a rainbow.
+/// </summary>
 public class PlayerColorChange : MonoBehaviour
 {
     [SerializeField] private float delayTime;
@@ -56,7 +60,8 @@ public class PlayerColorChange : MonoBehaviour
             var (colorChange, nextState, changeCondition) = stateDict[currentState];
             color += colorChange;
 
-            Debug.LogWarning(color);
+            
+
 
             rend.material.color = new Color(color.x / 255f, color.y / 255f, color.z / 255f);
             rend.material.SetColor("_EmissionColor", new Color(color.x / 255f, color.y / 255f, color.z / 255f));

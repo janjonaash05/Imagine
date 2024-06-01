@@ -4,6 +4,11 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
 
+
+
+/// <summary>
+/// Manages the players's health and overrides certain actions during damage or death. Also checks for health pickups.
+/// </summary>
 public class PlayerHealth : Health
 {
 
@@ -63,6 +68,8 @@ public class PlayerHealth : Health
 
             }
         }
+       
+
 
     }
 }

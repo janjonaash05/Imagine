@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+
+/// <summary>
+/// Manages the movement, collision and death of the projectile.
+/// </summary>
 public class ProjectileMovement : MonoBehaviour
 {
 
@@ -11,7 +15,7 @@ public class ProjectileMovement : MonoBehaviour
     private Rigidbody rb;
     private new Collider collider;
 
-
+    private int damage;
 
 
     [SerializeField]
@@ -47,9 +51,14 @@ public class ProjectileMovement : MonoBehaviour
     public void SetDirection(Vector3 dir) => this.dir = dir;
 
 
-    public void Launch()
-    {
 
+    /// <summary>
+    /// Sets the damage multiplier and adds force to the RigidBody in a previously set direction.
+    /// </summary>
+    /// <param name="damage"></param>
+    public void Launch(int damage)
+    {
+        this.damage = damage;
         rb.AddForce(speed * Time.fixedDeltaTime * dir);
 
     }
@@ -63,7 +72,7 @@ public class ProjectileMovement : MonoBehaviour
 
         if ((1 << collider.gameObject.layer & hitMask) != 0)
         {
-            collider.GetComponent<Health>().Damage();
+            collider.GetComponent<Health>().Damage(damage);
         }
 
         Destroy(this.collider);

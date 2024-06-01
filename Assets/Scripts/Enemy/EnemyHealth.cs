@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+
+/// <summary>
+/// Manages the enemy's health and overrides certain actions during damage or death.
+/// </summary>
 public class EnemyHealth : Health
 {
 

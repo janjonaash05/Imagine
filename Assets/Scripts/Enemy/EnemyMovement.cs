@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+
+/// <summary>
+/// Manages enemy's movement via its RigidBody.
+/// </summary>
 public class EnemyMovement : MonoBehaviour
 {
-    // Start is called before the first frame update
+   
 
 
 
@@ -46,17 +50,10 @@ public class EnemyMovement : MonoBehaviour
     private void FixedUpdate()
     {
 
-
-
-
-
-
         var direction = new Vector3(player.PlayerPosition.x, rb.position.y, player.PlayerPosition.z) - rb.position;
-
 
         rb.MovePosition(rb.position + (speed * Time.fixedDeltaTime * direction));
         rb.position = AfterMoveAdjust();
-
 
     }
 
@@ -65,14 +62,6 @@ public class EnemyMovement : MonoBehaviour
     {
         return new(rb.position.x, startY, rb.position.z);
     }
-
-
-
-
-
-
-
-
 
 
 }

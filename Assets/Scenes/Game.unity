@@ -1463,6 +1463,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 4470102409419880063, guid: 3f39a12147d1fdc40b7de118724577f3, type: 3}
   projectileDeathTimeout: 1
   fireRate: 20
+  damageMult: 1
   cameraContactMask:
     serializedVersion: 2
     m_Bits: 8192

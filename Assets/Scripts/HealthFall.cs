@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+/// <summary>
+/// Manages the start behaviour of HealthPickup physics when spawned (grounding etc.) 
+/// </summary>
 public class HealthFall : MonoBehaviour
 {
 

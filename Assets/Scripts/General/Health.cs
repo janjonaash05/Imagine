@@ -4,6 +4,10 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+
+/// <summary>
+/// Manages health, damage and eventually death behaviour with a ParticleSystem.
+/// </summary>
 public abstract class Health : MonoBehaviour
 {
     [SerializeField] protected int baseHealth;
@@ -22,14 +26,17 @@ public abstract class Health : MonoBehaviour
 
     private bool inDeath = false;
 
-    public void Damage()
+    public void Damage(int damage)
     {
-        health-= health > 0 ? 1 :0;
+        if (inDeath) return;
+
+        health -= (health -damage >= 0) ? damage : damage-health;
+
         MidDamageAction();
 
         if (health <= 0)
         {
-            if (inDeath) return;
+           
             inDeath = true;
 
             var colliders = GetComponents<Collider>().ToList();

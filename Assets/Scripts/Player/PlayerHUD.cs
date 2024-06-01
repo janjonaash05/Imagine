@@ -8,6 +8,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Assertions;
 using static EnemyID;
+
+
+
+/// <summary>
+/// Manages the updating of the labels displaying health and kill stats, also run the reset timer for kills.
+/// </summary>
 public class PlayerHUD : MonoBehaviour
 {
 

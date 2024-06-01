@@ -6,6 +6,10 @@ using UnityEngine.Assertions;
 using UnityEngine.InputSystem;
 using static UnityEditor.PlayerSettings;
 
+
+/// <summary>
+/// Manages manual shooting through cursor movement and mouse holding.
+/// </summary>
 public class PlayerShooting : Shooting
 {
 
@@ -123,7 +127,7 @@ public class PlayerShooting : Shooting
 
             var ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
 
-            Debug.DrawRay(ray.origin, ray.direction * 100, Color.green);
+      
             Physics.Raycast(ray, out var hit, 100, cameraContactMask);
 
             Shoot(
@@ -131,7 +135,9 @@ public class PlayerShooting : Shooting
                  new(hit.point.x, transform.position.y + manualShootingOffsetY, hit.point.z));
 
 
-            yield return delay;
+            yield
+                
+                return delay;
 
 
 

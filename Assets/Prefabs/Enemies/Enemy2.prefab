@@ -180,6 +180,7 @@ MonoBehaviour:
   projectilePrefab: {fileID: 4470102409419880063, guid: 5d42bce0377355642b398697c631de49, type: 3}
   projectileDeathTimeout: 2
   fireRate: 25
+  damageMult: 3
 --- !u!114 &1165737819299332996
 MonoBehaviour:
   m_ObjectHideFlags: 0

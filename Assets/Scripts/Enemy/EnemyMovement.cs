@@ -50,7 +50,7 @@ public class EnemyMovement : MonoBehaviour
     private void FixedUpdate()
     {
 
-        var direction = new Vector3(player.PlayerPosition.x, rb.position.y, player.PlayerPosition.z) - rb.position;
+        var direction = (new Vector3(player.PlayerPosition.x, rb.position.y, player.PlayerPosition.z) - rb.position).normalized;
 
         rb.MovePosition(rb.position + (speed * Time.fixedDeltaTime * direction));
         rb.position = AfterMoveAdjust();

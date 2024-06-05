@@ -185,6 +185,7 @@ MonoBehaviour:
   moveSpeed: 500
   jumpSpeed: 250
   groundingDistance: 1.1
+  fps_debug: 120
 --- !u!114 &7249178110993556108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -220,7 +221,7 @@ MonoBehaviour:
   projectileDeathTimeout: 1
   fireRate: 20
   damageMult: 1
-  projectileSpeed: 10
+  projectileSpeed: 30
   projectileSize: 0.6
   cameraContactMask:
     serializedVersion: 2

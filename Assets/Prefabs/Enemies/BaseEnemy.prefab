@@ -168,7 +168,7 @@ MonoBehaviour:
   projectileDeathTimeout: 2
   fireRate: 20
   damageMult: 1
-  projectileSpeed: 100
+  projectileSpeed: 10
   projectileSize: 0.5
 --- !u!114 &1165737819299332996
 MonoBehaviour:
@@ -258,7 +258,7 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8732165642404740254}
   serializedVersion: 8
-  lengthInSec: 0.5
+  lengthInSec: 5
   simulationSpeed: 1
   stopAction: 0
   cullingMode: 0

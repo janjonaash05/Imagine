@@ -21,16 +21,17 @@ public class PlayerHUD : MonoBehaviour
     [SerializeField] private TextMeshProUGUI hpLabel;
 
 
-    private Dictionary<EnemyType, int> typeKilledDict;
+  //  private Dictionary<EnemyType, int> typeKilledDict;
 
     private Vector2 killedLabelStartPos;
     private RectTransform killedLabelRectTrans;
 
-    private List<EnemyType> enemyTypes;
+   // private List<EnemyType> enemyTypes;
 
     [SerializeField] private float killedLabelNewEntryOffset;
     private bool updated;
     [SerializeField] private float resetDelay;
+
 
     public static PlayerHUD Instance { get; private set; }
 
@@ -57,7 +58,7 @@ public class PlayerHUD : MonoBehaviour
     {
         Instance = null;
     }
-
+    /*
     private void Start()
     {
         typeKilledDict = new();
@@ -79,7 +80,7 @@ public class PlayerHUD : MonoBehaviour
         StartCoroutine(ResetTimer());
 
     }
-
+    
 
     private (string killedString, int offsetMultiplier) GetKilledStringAndOffsetMultiplier()
     {
@@ -131,7 +132,7 @@ public class PlayerHUD : MonoBehaviour
 
 
 
-   
+   /*
     private IEnumerator ResetTimer()
     {
 
@@ -156,8 +157,8 @@ public class PlayerHUD : MonoBehaviour
 
     }
 
-
-
+    */
+    /*
     private void ResetDict(Dictionary<EnemyType, int> dict)
     {
 
@@ -168,7 +169,7 @@ public class PlayerHUD : MonoBehaviour
 
 
     }
-
+    */
 
     
 

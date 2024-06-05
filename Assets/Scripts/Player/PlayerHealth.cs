@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,13 +19,30 @@ public class PlayerHealth : Health
     [SerializeField] private int healthGainedPerPickup;
 
 
+    public event Action<int,int> OnHealthUpdated;
+
+    public static PlayerHealth Instance { get; private set; }
+
+
+
+
 
     private new void Awake()
     {
         base.Awake();
         Assert.IsTrue(pickupMask > 0 && healthGainedPerPickup >= 0);
+
+        if (Instance == null) Instance = this;
+
+
     }
 
+
+    private new void OnDestroy()
+    {
+        base.OnDestroy();
+
+    }
 
 
     protected override void MidDeathAction()
@@ -41,15 +59,16 @@ public class PlayerHealth : Health
 
     }
 
-     private void Start()
+    private void Start()
     {
-        PlayerHUD.Instance.SetupHPLabel(baseHealth);
+        OnHealthUpdated?.Invoke(baseHealth, baseHealth);
     }
 
     protected override void MidDamageAction()
     {
 
-        PlayerHUD.Instance.UpdateHPLabel(health);
+
+        OnHealthUpdated?.Invoke(health,baseHealth);
     }
 
 
@@ -61,14 +80,14 @@ public class PlayerHealth : Health
         {
             foreach (var collider in result)
             {
-                if(collider.gameObject == null) continue;
+                if (collider.gameObject == null) continue;
                 health += (health + healthGainedPerPickup <= baseHealth) ? healthGainedPerPickup : baseHealth - health;
-                PlayerHUD.Instance.UpdateHPLabel(health);
+                OnHealthUpdated?.Invoke(health, baseHealth);
                 Destroy(collider.gameObject);
 
             }
         }
-       
+
 
 
     }

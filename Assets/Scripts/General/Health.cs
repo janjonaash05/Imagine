@@ -24,6 +24,14 @@ public abstract class Health : MonoBehaviour
         rend.material = new Material( GetComponent<Renderer>().material);
     }
 
+
+
+    protected void OnDestroy()
+    {
+        
+    }
+
+
     private bool inDeath = false;
 
     public void Damage(int damage)

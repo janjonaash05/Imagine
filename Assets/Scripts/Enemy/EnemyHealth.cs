@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,16 @@ public class EnemyHealth : Health
 
 
 
+
+
+
     private Renderer rend;
+
+
+    public static event Action<string> OnDeath;
+
+    
+  
 
     private new void Awake()
     {
@@ -40,7 +50,11 @@ public class EnemyHealth : Health
 
     protected override void MidDeathAction()
     {
-        PlayerHUD.Instance.AddKill(GetComponent<EnemyID>().Type);
+      //  PlayerHUD.Instance.AddKill(GetComponent<EnemyID>().Type);
+
+
+
+
 
         var r = new System.Random();
         for (int i = 0; i < healthPickupAmount; i++)
@@ -54,6 +68,8 @@ public class EnemyHealth : Health
 
     protected override void AfterDeathAction()
     {
+
+        OnDeath?.Invoke(GetComponent<EnemyID>().Name);
         Destroy(gameObject);
     }
 

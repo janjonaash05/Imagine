@@ -8,11 +8,11 @@ using UnityEngine;
 /// </summary>
 public class EnemyID : MonoBehaviour
 {
-    public enum EnemyType {Red,Green,Blue }
+    
 
-    [SerializeField] private EnemyType type;
+    [SerializeField] private string name;
 
     
-    public EnemyType Type => type;
+    public string Name => name;
 
 }

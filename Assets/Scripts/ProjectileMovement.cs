@@ -10,7 +10,9 @@ using UnityEngine.Assertions;
 public class ProjectileMovement : MonoBehaviour
 {
 
-    [SerializeField] private float speed;
+    private float speed;
+
+   
 
     private Rigidbody rb;
     private new Collider collider;
@@ -27,9 +29,11 @@ public class ProjectileMovement : MonoBehaviour
     private ParticleSystem deathPS;
 
 
+
+
     private void Awake()
     {
-        Assert.IsTrue(speed > 0);
+     
 
 
         rb = GetComponent<Rigidbody>();
@@ -43,6 +47,9 @@ public class ProjectileMovement : MonoBehaviour
 
         deathPSrend.material = rend.material;
         deathPSrend.trailMaterial = rend.material;
+
+
+        
     }
 
     private Vector3 dir;
@@ -56,14 +63,26 @@ public class ProjectileMovement : MonoBehaviour
     /// Sets the damage multiplier and adds force to the RigidBody in a previously set direction.
     /// </summary>
     /// <param name="damage"></param>
-    public void Launch(int damage)
+    public void Launch(int speed,int damage, float timeout)
     {
+        this.speed = speed;
         this.damage = damage;
-        rb.AddForce(speed * Time.fixedDeltaTime * dir);
+
+        Destroy(gameObject, timeout);
+        
+ 
+
+     
 
     }
 
+    private void FixedUpdate()
+    {
 
+      
+
+        rb.MovePosition(rb.position + (speed * Time.fixedDeltaTime * dir));
+    }
 
     private void OnTriggerEnter(Collider collider)
     {

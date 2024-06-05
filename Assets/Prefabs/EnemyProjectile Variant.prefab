@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &4092430893679974396
+--- !u!1001 &5894518272080382089
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -48,17 +48,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1672953857278171582, guid: 5d42bce0377355642b398697c631de49, type: 3}
-      propertyPath: hitMask.m_Bits
-      value: 128
-      objectReference: {fileID: 0}
-    - target: {fileID: 3483990614566004063, guid: 5d42bce0377355642b398697c631de49, type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 4470102409419880063, guid: 5d42bce0377355642b398697c631de49, type: 3}
       propertyPath: m_Name
-      value: PlayerProjectile
+      value: EnemyProjectile
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

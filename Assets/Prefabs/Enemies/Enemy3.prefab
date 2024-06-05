@@ -36,6 +36,10 @@ PrefabInstance:
       propertyPath: damageMult
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7686358588231255014, guid: dfee1b5d5d3480a41a33dd583a0a840b, type: 3}
+      propertyPath: projectileSize
+      value: 0.35
+      objectReference: {fileID: 0}
     - target: {fileID: 7725921642369959613, guid: dfee1b5d5d3480a41a33dd583a0a840b, type: 3}
       propertyPath: name
       value: E3

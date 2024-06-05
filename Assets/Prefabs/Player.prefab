@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 3372357628573912156}
   - component: {fileID: 2649964524538008370}
   - component: {fileID: 3339776970507121678}
-  - component: {fileID: 2650431207489986188}
   - component: {fileID: 7249178110993556108}
   - component: {fileID: 7938416608432926767}
   - component: {fileID: 4472314970741544201}
@@ -186,22 +185,6 @@ MonoBehaviour:
   moveSpeed: 500
   jumpSpeed: 250
   groundingDistance: 1.1
---- !u!114 &2650431207489986188
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5456312533948365041}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94783d9331aaacc409fd58feb907c645, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  killedLabel: {fileID: 0}
-  hpLabel: {fileID: 0}
-  killedLabelNewEntryOffset: 20
-  resetDelay: 3
 --- !u!114 &7249178110993556108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,10 +216,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95eeebde38e8416409c1c7dc37b8843d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 4470102409419880063, guid: 3f39a12147d1fdc40b7de118724577f3, type: 3}
+  projectilePrefab: {fileID: 487446774394904963, guid: 6ea8d38422911e94b8b742e0704b24ce, type: 3}
   projectileDeathTimeout: 1
   fireRate: 20
   damageMult: 1
+  projectileSpeed: 10
+  projectileSize: 0.6
   cameraContactMask:
     serializedVersion: 2
     m_Bits: 8192

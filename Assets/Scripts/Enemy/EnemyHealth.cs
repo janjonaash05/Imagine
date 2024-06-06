@@ -14,47 +14,31 @@ public class EnemyHealth : Health
     [SerializeField] private GameObject healthPickupPrefab;
     [SerializeField] private int healthPickupAmount;
 
-
-
-
-
+    [SerializeField] private KillsManagerScriptableObject killsManager;
 
     private Renderer rend;
-
-
+    private Material changingMat;
     public static event Action<string> OnDeath;
 
-    
-  
 
-    private new void Awake()
-    {
-        base.Awake();
-        Assert.IsNotNull(healthPickupPrefab);
-        Assert.IsTrue(healthPickupAmount >= 0);
 
-        rend = GetComponent<Renderer>();
-    }
+
+
+ 
 
     protected override void MidDamageAction()
     {
-        if (rend != null) 
+        if (rend != null)
         {
-            var color = rend.material.color;
-            var newColor = new Color(color.r,color.g, color.b,  health/ (float) baseHealth);
-            rend.material.color = newColor;
+            var color = changingMat.color;
+            var newColor = new Color(color.r, color.g, color.b, health / (float)baseHealth);
+            changingMat.color = newColor;
         }
     }
 
-
-
+  
     protected override void MidDeathAction()
     {
-      //  PlayerHUD.Instance.AddKill(GetComponent<EnemyID>().Type);
-
-
-
-
 
         var r = new System.Random();
         for (int i = 0; i < healthPickupAmount; i++)
@@ -69,8 +53,26 @@ public class EnemyHealth : Health
     protected override void AfterDeathAction()
     {
 
-        OnDeath?.Invoke(GetComponent<EnemyID>().Name);
+        killsManager.KillNamedEnemy(GetComponent<EnemyID>().Name);
         Destroy(gameObject);
+    }
+
+    private new void Awake()
+    {
+        base.Awake();
+
+        Assert.IsNotNull(killsManager, "kills manager is not null");
+        Assert.IsNotNull(healthPickupPrefab, "health pickup prefab must not be null");
+        Assert.IsTrue(healthPickupAmount >= 0, "health pickup amount must be non-negative");
+
+        rend = GetComponent<Renderer>();
+        changingMat = rend.material;
+    }
+
+    private new void OnDestroy()
+    {
+        base.OnDestroy();
+        Destroy(changingMat);
     }
 
 

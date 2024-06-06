@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -10,42 +11,44 @@ using UnityEngine.Assertions;
 /// </summary>
 public class RadiusDetection : MonoBehaviour
 {
-    public event Action<GameObject> OnObjectCaught;
-    public event Action OnObjectLost;
 
     
+
 
     [SerializeField] private LayerMask includeMask;
-
-    
-
     [SerializeField] private float radius;
+
+    public event Action<GameObject> OnObjectCaught;
+    public event Action OnObjectLost;
 
     private void Awake()
     {
         Assert.IsTrue(radius > 0);
-        results = new Collider[1];
     }
 
 
 
-    private Collider[] results;
     private void FixedUpdate()
     {
-         
-        if (Physics.OverlapSphereNonAlloc(transform.position, radius, results, includeMask, QueryTriggerInteraction.Ignore) == 0)
+
+       var results = Physics.OverlapSphere(transform.position, radius, includeMask, QueryTriggerInteraction.Ignore);
+
+        if(results.Length == 0 ) 
         {
             OnObjectLost?.Invoke();
+            return;
         }
 
-        else if (results[0].gameObject != null) 
+        results = results.OrderBy(x => Vector3.SqrMagnitude(x.transform.position - transform.position)).ToArray();
+
+        if (results[0].gameObject != null)
         {
             OnObjectCaught?.Invoke(results[0].gameObject);
         }
 
-       
+
     }
 
 
-   
+
 }

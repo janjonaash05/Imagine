@@ -11,10 +11,13 @@ using UnityEngine.Assertions;
 public class Shooting : MonoBehaviour
 {
     protected RadiusDetection radiusDetection;
-    [SerializeField] protected GameObject projectilePrefab;
-    [SerializeField] protected float projectileDeathTimeout;
+   // [SerializeField] protected GameObject projectilePrefab;
+    [SerializeField] protected ProjectileMovement movementPrefab;
+
     [SerializeField] protected float fireRate;
     [SerializeField] protected int damageMult;
+    [SerializeField] protected int projectileSpeed;
+    [SerializeField] protected float projectileSize;
 
 
     private Coroutine autoShootingCoroutine;
@@ -28,18 +31,38 @@ public class Shooting : MonoBehaviour
 
     private List<Collider> colliders;
 
+
+    private Vector3 projectileScale;
+
+
+
     protected void Awake()
     {
-        Assert.IsNotNull(projectilePrefab);
-        Assert.IsTrue(projectileDeathTimeout > 0);
-        Assert.IsTrue(fireRate > 0 && damageMult > 0);
+        Assert.IsNotNull(movementPrefab, "movement prefab is not null");
+        
+        Assert.IsTrue(fireRate > 0, "fire rate is positive");
+        Assert.IsTrue(damageMult > 0, "damage multiplier is positive");
+        Assert.IsTrue(projectileSize > 0, "projectile size is positive");
+
 
         radiusDetection = GetComponent<RadiusDetection>();
         delay = new(1f / fireRate);
 
         colliders = GetComponents<Collider>().ToList();
 
+
+        projectileScale = projectileSize * Vector3.one;
+
+        
+
     }
+
+
+
+
+
+
+
 
 
 
@@ -56,6 +79,8 @@ public class Shooting : MonoBehaviour
     {
         radiusDetection.OnObjectCaught -= StartAutoShooting;
         radiusDetection.OnObjectLost -= StopAutoShooting;
+
+
     }
 
 
@@ -69,6 +94,7 @@ public class Shooting : MonoBehaviour
 
     protected void StartAutoShooting(GameObject targetObject)
     {
+       
         if (!ableToAutoShoot || manuallyShooting) return;
 
         autoShootingCoroutine = StartCoroutine(StartShootingEnumerator(targetObject));
@@ -77,11 +103,14 @@ public class Shooting : MonoBehaviour
 
     protected IEnumerator StartShootingEnumerator(GameObject g)
     {
+
+
+        var collider = g.GetComponent<Collider>();
         ableToAutoShoot = false;
 
         while (true)
         {
-            if (g == null) { ableToAutoShoot = true; yield break; }
+            if (collider == null) { ableToAutoShoot = true; yield break; }
 
             ShootFromCenter(g.transform.position);
 
@@ -106,29 +135,25 @@ public class Shooting : MonoBehaviour
 
 
 
+
+   
+
     /// <summary>
-    /// Instantiates the projectile prefab at an origin point, makes it ignore this gameObject's collider(s), calculates the direction, launches it with a damageMultiplier.
+    /// Instantiates the projectile movement prefab at an origin point, sets the direction, launches it with speed, damage multiplier and colliders to ignore.
     /// </summary>
     /// <param name="origin"></param>
     /// <param name="target"></param>
     private void SummonBullet(Vector3 origin, Vector3 target)
     {
-        var projectile = Instantiate(projectilePrefab, origin, transform.rotation);
 
 
 
-        foreach (var collider in colliders)
-        {
-            if (collider != null)
-                Physics.IgnoreCollision(projectile.GetComponent<Collider>(), collider, true);
-        }
-
-        var movement = projectile.GetComponent<ProjectileMovement>();
-        movement.EnableCollision();
+        var movement = Instantiate(movementPrefab, origin, transform.rotation);
+        movement.transform.localScale = projectileScale;
         movement.SetDirection((target - origin).normalized);
-        movement.Launch(damageMult);
+        movement.Launch(projectileSpeed, damageMult, colliders);
 
-        Destroy(projectile, projectileDeathTimeout);
+        
 
 
 

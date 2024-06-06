@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 
 /// <summary>
@@ -8,11 +9,16 @@ using UnityEngine;
 /// </summary>
 public class EnemyID : MonoBehaviour
 {
-    public enum EnemyType {Red,Green,Blue }
-
-    [SerializeField] private EnemyType type;
-
     
-    public EnemyType Type => type;
+
+    [SerializeField] private string name;
+
+    public string Name => name;
+
+
+    private void Awake()
+    {
+        Assert.IsTrue(name != null && !name.Equals(string.Empty), "name is not null or empty");
+    }
 
 }

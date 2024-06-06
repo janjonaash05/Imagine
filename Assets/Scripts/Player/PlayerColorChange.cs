@@ -16,7 +16,7 @@ public class PlayerColorChange : MonoBehaviour
 
     private void Awake()
     {
-        Assert.IsTrue(delayTime >=0);
+        Assert.IsTrue(delayTime >=0, "delay time must be non-negative");
     }
 
     private void Start()
@@ -60,7 +60,7 @@ public class PlayerColorChange : MonoBehaviour
             var (colorChange, nextState, changeCondition) = stateDict[currentState];
             color += colorChange;
 
-            
+                
 
 
             rend.material.color = new Color(color.x / 255f, color.y / 255f, color.z / 255f);

@@ -15,7 +15,6 @@ public class PlayerShooting : Shooting
 
 
     private PlayerController controller;
-
     private Coroutine manuallyShootingCoroutine;
 
     [SerializeField]
@@ -27,11 +26,8 @@ public class PlayerShooting : Shooting
     private Vector3 cameraColliderSize;
 
 
-
-
     [SerializeField] private int layerIndex;
-
-    private Renderer projectileRenderer, playerRenderer;
+    private Renderer playerRenderer;
 
     protected new void Awake()
     {
@@ -52,13 +48,19 @@ public class PlayerShooting : Shooting
         CreateCameraCollider();
 
 
-        projectileRenderer = projectilePrefab.GetComponent<Renderer>();
+        
         playerRenderer = GetComponent<Renderer>();
 
-        projectileRenderer.material = playerRenderer.material;
 
     }
 
+    protected new void OnDestroy()
+    {
+        base.OnDestroy();
+
+        controller.OnPlayerShootingStart -= StartManuallyShooting;
+        controller.OnPlayerShootingEnd -= StopManuallyShooting;
+    }
 
 
 
@@ -90,18 +92,11 @@ public class PlayerShooting : Shooting
 
 
 
-    protected new void OnDestroy()
-    {
-        base.OnDestroy();
-
-        controller.OnPlayerShootingStart -= StartManuallyShooting;
-        controller.OnPlayerShootingEnd -= StopManuallyShooting;
-    }
-
+  
 
     private void StartManuallyShooting()
     {
-
+        
         manuallyShooting = true;
         StopAutoShooting();
         manuallyShootingCoroutine = StartCoroutine(ShootingEnumerator());

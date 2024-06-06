@@ -11,16 +11,30 @@ using UnityEngine.Assertions;
 public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private GameObject[] prefabs;
-
-    private System.Random rand;
-    [SerializeField] private float delay;
     [SerializeField] private float upOffset;
+    private System.Random rand;
     private void Awake()
     {
-        Assert.IsTrue(prefabs.Length > 0 && upOffset >= 0 && delay > 0);
+ 
+        Assert.IsTrue(prefabs.Length > 0, "prefabs length must be positive");
         rand = new();
 
-        InvokeRepeating(nameof(Spawn), (float)rand.NextDouble() * delay, delay);
+        StartCoroutine(ReadyCheck());
+       
+    }
+
+    private IEnumerator ReadyCheck()
+    {
+        while (EnemySpawnerManager.Instance == null) yield return null;
+        StartSpawning();
+
+    }
+
+
+
+    private void StartSpawning() 
+    {
+        InvokeRepeating(nameof(Spawn), EnemySpawnerManager.Instance.StartDelay, EnemySpawnerManager.Instance.RepeatDelay);
     }
 
 
@@ -28,7 +42,6 @@ public class EnemySpawner : MonoBehaviour
     private void Spawn()
     {
         Instantiate(prefabs[rand.Next(prefabs.Length)], transform.position + upOffset * Vector3.up, transform.rotation);
-
 
 
     }

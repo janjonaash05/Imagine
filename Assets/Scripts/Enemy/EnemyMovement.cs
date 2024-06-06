@@ -9,23 +9,27 @@ using UnityEngine.Assertions;
 /// </summary>
 public class EnemyMovement : MonoBehaviour
 {
-   
-
-
 
     [SerializeField] protected float speed;
     protected Rigidbody rb;
-
-    private PlayerController player;
-
-
     protected float startY;
-
-
+    private PlayerController player;
     private delegate Vector3 MovementAdjust();
 
 
+    protected virtual Vector3 AfterMoveAdjust()
+    {
+        return new(rb.position.x, startY, rb.position.z);
+    }
 
+    protected void Awake()
+    {
+        Assert.IsTrue(speed > 0);
+        rb = GetComponent<Rigidbody>();
+        startY = rb.position.y;
+
+
+    }
 
     private void Start()
     {
@@ -34,23 +38,10 @@ public class EnemyMovement : MonoBehaviour
     }
 
 
-    protected void Awake()
-    {
-        Assert.IsTrue(speed > 0);
-
-
-
-        rb = GetComponent<Rigidbody>();
-        startY = rb.position.y;
-
-
-    }
-
-    
     private void FixedUpdate()
     {
 
-        var direction = new Vector3(player.PlayerPosition.x, rb.position.y, player.PlayerPosition.z) - rb.position;
+        var direction = (new Vector3(player.PlayerPosition.x, rb.position.y, player.PlayerPosition.z) - rb.position).normalized;
 
         rb.MovePosition(rb.position + (speed * Time.fixedDeltaTime * direction));
         rb.position = AfterMoveAdjust();
@@ -58,10 +49,7 @@ public class EnemyMovement : MonoBehaviour
     }
 
 
-    protected virtual Vector3 AfterMoveAdjust()
-    {
-        return new(rb.position.x, startY, rb.position.z);
-    }
+
 
 
 }

@@ -773,6 +773,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resetDelay: 3
   killedLabelNewEntryOffset: 20
+  killsManager: {fileID: 11400000, guid: bfb8e3eff1867ad4890e6b60f00d23e9, type: 2}
 --- !u!1 &924542009
 GameObject:
   m_ObjectHideFlags: 0
@@ -1920,6 +1921,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1 &2138296587
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2138296589}
+  - component: {fileID: 2138296588}
+  m_Layer: 0
+  m_Name: EnemySpawnerManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2138296588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2138296587}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7ae1ded21095bd47b42c2a1e6dbb516, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  repeatDelay: 5
+  startDelay: 5
+--- !u!4 &2138296589
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2138296587}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9.923034, y: 4.864936, z: 0.032925114}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &745604409939420192
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2058,6 +2105,7 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 2138296589}
   - {fileID: 705507995}
   - {fileID: 1615574063}
   - {fileID: 1543618250}

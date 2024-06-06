@@ -5009,6 +5009,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7114b235677ea0a40821927577b31704, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectileDeathTimeout: 2
   ignoreMask:
     serializedVersion: 2
     m_Bits: 9792

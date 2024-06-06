@@ -55,7 +55,7 @@ PrefabInstance:
     - target: {fileID: 3483990614566004063, guid: 5d42bce0377355642b398697c631de49, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: 8d6409012ffd30e4e8dcf9f392db6089, type: 2}
     - target: {fileID: 4470102409419880063, guid: 5d42bce0377355642b398697c631de49, type: 3}
       propertyPath: m_Name
       value: PlayerProjectile

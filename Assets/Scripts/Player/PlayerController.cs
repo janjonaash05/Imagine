@@ -15,7 +15,12 @@ public class PlayerController : MonoBehaviour
 
 
 
+    private Vector2 moveDir;
 
+    [SerializeField] private LayerMask groundMask;
+    [SerializeField] private float moveSpeed;
+    [SerializeField] private float jumpSpeed;
+    [SerializeField] private float groundingDistance;
 
     private Rigidbody rb;
     private PlayerInputs inputs;
@@ -24,10 +29,8 @@ public class PlayerController : MonoBehaviour
     private InputAction jump;
     private InputAction shoot;
     private InputAction cam;
-
+    private bool grounded;
     public InputAction CameraAction => cam;
-
-
     public Vector3 PlayerPosition { get; private set; }
 
 
@@ -36,12 +39,11 @@ public class PlayerController : MonoBehaviour
     public event Action OnPlayerShootingStart, OnPlayerShootingEnd;
 
 
-    private Vector2 moveDir;
 
-    [SerializeField] private LayerMask groundMask;
-    [SerializeField] private float moveSpeed;
-    [SerializeField] private float jumpSpeed;
-    [SerializeField] private float groundingDistance;
+    public void DisableExternal()
+    {
+        OnDisable();
+    }
 
     private void Awake()
     {
@@ -77,10 +79,7 @@ public class PlayerController : MonoBehaviour
 
 
 
-    public void DisableExternal()
-    {
-        OnDisable();
-    }
+   
 
     private void OnDisable()
     {
@@ -94,9 +93,6 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-
-
-
 
         grounded = true;
         jump.performed += Jump;
@@ -153,7 +149,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    private bool grounded;
+
     private void Jump(InputAction.CallbackContext context)
     {
         if (!grounded) return;

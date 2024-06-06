@@ -11,40 +11,30 @@ using UnityEngine.Assertions;
 public abstract class Health : MonoBehaviour
 {
     [SerializeField] protected int baseHealth;
-    [SerializeField] private ParticleSystem deathPS;
     protected int health;
-    protected void Awake()
-    {
-        health = baseHealth;
-
-        Assert.IsTrue(baseHealth > 0);
-        Assert.IsNotNull(deathPS);
-
-        var rend = deathPS.GetComponent<ParticleSystemRenderer>();
-        rend.material = new Material( GetComponent<Renderer>().material);
-    }
-
-
-
-    protected void OnDestroy()
-    {
-        
-    }
-
+    [SerializeField] private ParticleSystem deathPS;
 
     private bool inDeath = false;
+
+    private Material projectileMat;
+
+
+
+
+
+
 
     public void Damage(int damage)
     {
         if (inDeath) return;
 
-        health -= (health -damage >= 0) ? damage : damage-health;
+        health -= (health - damage >= 0) ? damage : damage - health;
 
         MidDamageAction();
 
         if (health <= 0)
         {
-           
+
             inDeath = true;
 
             var colliders = GetComponents<Collider>().ToList();
@@ -60,8 +50,34 @@ public abstract class Health : MonoBehaviour
     }
 
 
+    protected void Awake()
+    {
+        health = baseHealth;
+
+        Assert.IsTrue(baseHealth > 0, "base health must be positive");
+        Assert.IsNotNull(deathPS, "death particle system must not be null");
 
 
+        projectileMat = new Material(GetComponent<Renderer>().sharedMaterial);
+
+        var rend = deathPS.GetComponent<ParticleSystemRenderer>();
+        rend.sharedMaterial = projectileMat;
+    }
+
+
+
+    protected void OnDestroy()
+    {
+        Destroy(projectileMat);
+    }
+
+
+
+    protected virtual void AfterDeathAction() { }
+
+    protected virtual void MidDamageAction() { }
+
+    protected virtual void MidDeathAction() { }
 
     private IEnumerator PlayDeathPS()
     {
@@ -79,11 +95,6 @@ public abstract class Health : MonoBehaviour
 
 
 
-    protected virtual void AfterDeathAction() { }
-
-    protected virtual void MidDamageAction() { }
-
-    protected virtual void MidDeathAction() { }
 
 
 

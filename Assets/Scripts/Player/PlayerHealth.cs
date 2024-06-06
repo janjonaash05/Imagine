@@ -27,22 +27,7 @@ public class PlayerHealth : Health
 
 
 
-    private new void Awake()
-    {
-        base.Awake();
-        Assert.IsTrue(pickupMask > 0 && healthGainedPerPickup >= 0);
-
-        if (Instance == null) Instance = this;
-
-
-    }
-
-
-    private new void OnDestroy()
-    {
-        base.OnDestroy();
-
-    }
+  
 
 
     protected override void MidDeathAction()
@@ -53,21 +38,12 @@ public class PlayerHealth : Health
 
     protected override void AfterDeathAction()
     {
-
         SceneLoader.LoadMenu();
-
-
     }
 
-    private void Start()
-    {
-        OnHealthUpdated?.Invoke(baseHealth, baseHealth);
-    }
-
+   
     protected override void MidDamageAction()
     {
-
-
         OnHealthUpdated?.Invoke(health,baseHealth);
     }
 
@@ -88,7 +64,24 @@ public class PlayerHealth : Health
             }
         }
 
+    }
+
+    private void Start()
+    {
+        OnHealthUpdated?.Invoke(baseHealth, baseHealth);
+    }
+
+    private new void Awake()
+    {
+        base.Awake();
+        Assert.IsTrue(healthGainedPerPickup >= 0, "health gained per pickup must be non-negative");
+
+        if (Instance == null) Instance = this;
+    }
 
 
+    private new void OnDestroy()
+    {
+        base.OnDestroy();
     }
 }

@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b85fa418e0174a847b51b598ce11309d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: 
+  name: none
 --- !u!114 &7686358588231255014
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,8 +164,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f91fa46837f84c14a9630f7158f58a01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 8053974721994194678, guid: a598a450634b89e438aa8c57183c2cad, type: 3}
-  projectileDeathTimeout: 2
+  movementPrefab: {fileID: 5114417404525007159, guid: a598a450634b89e438aa8c57183c2cad, type: 3}
   fireRate: 20
   damageMult: 1
   projectileSpeed: 10
@@ -186,6 +185,7 @@ MonoBehaviour:
   deathPS: {fileID: 2854871432157151568}
   healthPickupPrefab: {fileID: 3729890190628577545, guid: 7041f94a51b12d54ba5b96af9dfca871, type: 3}
   healthPickupAmount: 2
+  killsManager: {fileID: 11400000, guid: bfb8e3eff1867ad4890e6b60f00d23e9, type: 2}
 --- !u!114 &2824270809957085443
 MonoBehaviour:
   m_ObjectHideFlags: 0

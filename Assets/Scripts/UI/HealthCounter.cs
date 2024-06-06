@@ -15,14 +15,14 @@ public class HealthCounter : MonoBehaviour
         
     }
 
-    private void Start()
-    {
-        PlayerHealth.Instance.OnHealthUpdated += UpdateHPLabel;
-    }
-
     public void UpdateHPLabel(int health, int baseHealth)
     {
         healthLbl.text = health + "/" + baseHealth;
 
+    }
+
+    private void Start()
+    {
+        PlayerHealth.Instance.OnHealthUpdated += UpdateHPLabel;
     }
 }

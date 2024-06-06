@@ -15,12 +15,12 @@ public class KillCounter : MonoBehaviour
 
     private Dictionary<string, int> nameKilledDict;
 
-    [SerializeField] float resetDelay;
+    [SerializeField] private float resetDelay;
 
     private bool updated;
 
     [SerializeField] private float killedLabelNewEntryOffset;
-
+    [SerializeField] private KillsManagerScriptableObject killsManager;
 
     private Vector2 killedLabelStartPos;
     private RectTransform killedLabelRectTrans;
@@ -29,6 +29,7 @@ public class KillCounter : MonoBehaviour
 
     private void Awake()
     {
+        Assert.IsNotNull(killsManager, "kills manager is not null");
         Assert.IsTrue(resetDelay >= 0, "Reset delay must be non-negative");
     }
 
@@ -54,9 +55,16 @@ public class KillCounter : MonoBehaviour
 
 
 
-        EnemyHealth.OnDeath += AddKill;
+        killsManager.OnNamedEnemyKilled += AddKill;
     }
 
+
+
+
+    private void OnDestroy()
+    {
+        killsManager.OnNamedEnemyKilled -= AddKill;
+    }
 
     private void AddKill(string name)
     {
@@ -110,17 +118,13 @@ public class KillCounter : MonoBehaviour
             updated = false;
 
             yield return delay;
-            if (updated)
-            {
-                ChangeKilledLabel();
-            }
-            else
+            if (!updated)
             {
                 nameKilledDict = new();
             }
 
 
-
+            ChangeKilledLabel();
 
         }
 
